@@ -59,7 +59,7 @@ class Login extends Component {
         const { userName, password } = this.state.user;
         const { messageToggle, message } = this.state;
         return (
-            <OuterContainer>
+            <OuterContainer toggle={this.props.toggle}>
                 <FormContainer>
                     <Form>
                         <Span onClick={this.props.toggleLogin}>X</Span>
@@ -76,10 +76,11 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-    toggle: state.login.toggle
+    toggle: state.login.toggleLogin
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     toggleLogin,
 }, dispatch)
+
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const OuterContainer = styled.div`
-display: block; /* Hidden by default */
+display: ${props => props.toggle ? `block;` : `none;`} /* Hidden by default */
 position: fixed; /* Stay in place */
 z-index: 1; /* Sit on top */
 padding-top: 100px; /* Location of the box */
@@ -67,7 +67,13 @@ left: 95%;
 width: 3%;
 padding: 12px;
 font-size: 20px;
+margin-top: 12px;
 position: relative;
+
+&:hover {
+    background-color: skyblue;
+    cursor: pointer;
+}
 `
 
 export const StartPageWrapper = styled.div`

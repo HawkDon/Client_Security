@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { OuterContainer, FormContainer, Form, FormBlock, CenterBlock, Span } from './my_styled_components';
 import Authorization from '../rest/Authorization';
 
+import { connect } from 'react-redux';
+
+import { bindActionCreators } from 'redux';
+
+import { toggleRegister } from '../actions/toggleLogin';
+
 class Register extends Component {
     state = {
         user: {
@@ -67,10 +73,10 @@ class Register extends Component {
         const { firstName, lastName, email, userName, password } = this.state.user;
         const { validationPassword, messageToggle, message } = this.state;
         return (
-            <OuterContainer>
+            <OuterContainer toggle={this.props.toggle}>
                 <FormContainer>
                     <Form>
-                        <Span>X</Span>
+                        <Span onClick={this.props.toggleRegister}>X</Span>
                         <h1 style={{ textAlign: 'center' }}>Register</h1>
                         {messageToggle ? (<p style={{textAlign: 'center', fontSize: '20px'}}>{message}</p>) : null}
                         <FormBlock><label>First Name:</label><input type="text" placeholder="Please type in your first name" id="firstName" value={firstName} onChange={this.handleInputChange} /></FormBlock>
@@ -87,4 +93,12 @@ class Register extends Component {
     }
 }
 
-export default Register;
+const mapStateToProps = state => ({
+    toggle: state.login.toggleRegister
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    toggleRegister,
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

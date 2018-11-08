@@ -4,9 +4,10 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  NavLink,
   Switch
 } from 'react-router-dom';
+
+import Header from './Header';
 
 // Router components
 
@@ -15,29 +16,24 @@ import Register from './router_components/Register';
 import StartPage from './router_components/StartPage';
 
 // Css components
-import { Wrapper, HeaderUl, HeaderLi } from './my_styled_components';
+import { Wrapper } from './my_styled_components';
 
 // Redux
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-
 // Devtools
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Reducers
 import rootReducer from './router_reducer';
 
-
 const store = createStore(rootReducer, {}, composeWithDevTools());
+
 const App = () => (
   <Provider store={store}>
     <Router>
       <Wrapper>
-        <HeaderUl>
-          <HeaderLi position="a"><NavLink exact to='/'>Start</NavLink></HeaderLi>
-          <HeaderLi position="j"><NavLink to='/login'>Login</NavLink></HeaderLi>
-          <HeaderLi position="i"><NavLink to='/register'>Register</NavLink></HeaderLi>
-        </HeaderUl>
+        <Header />
         <Switch>
           <Route exact path='/' render={() => <StartPage />} />
           <Route path='/login' render={() => <Login />} />
