@@ -13,6 +13,7 @@ const Header = ({ toggleLogin, toggleRegister }) => (
         <HeaderLi position="a"><NavLink exact to='/'>Start</NavLink></HeaderLi>
         <HeaderLi position="j"><NavLink onClick={toggleLogin} to='/login'>Login</NavLink></HeaderLi>
         <HeaderLi position="i"><NavLink onClick={toggleRegister} to='/register'>Register</NavLink></HeaderLi>
+        <HeaderLi position="h"><NavLink to='/mysql'>MySQL</NavLink></HeaderLi>
     </HeaderUl>
 )
 

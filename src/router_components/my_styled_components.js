@@ -80,3 +80,50 @@ export const StartPageWrapper = styled.div`
 width: 80%;
 margin: auto;
 `
+
+export const MySQLWrapper = styled.div`
+display: grid;
+grid-template-columns: 50% 50%;
+width: 80%;
+height: fit-content;
+background-color: grey;
+margin: auto;
+`;
+
+export const TextArea = styled.textarea`
+font-size: 20px;
+margin: 16px;
+`
+
+export const ListBlock = styled.div`
+    display: grid;
+    grid-template-columns: 1fr;
+`
+
+export const SqlUl = styled.ul`
+text-align: center;
+list-style-type: none;
+
+& li {
+    font-size: 20px;
+}
+`
+
+export const SubmitButton = styled.input`
+width: 15%;
+padding: 12px;
+margin: 12px;
+position: relative;
+left: 37%;
+`
+
+export const RadioButtons = styled.div`
+margin: auto;
+position: relative;
+right: 20%;
+
+& input {
+    margin-top: -1px;
+    vertical-align: middle;
+}
+`
