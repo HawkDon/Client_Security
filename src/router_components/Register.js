@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { OuterContainer, FormContainer, Form, FormBlock, CenterBlock, Span } from './my_styled_components';
+import Authorization from '../rest/Authorization';
 
 class Register extends Component {
     state = {

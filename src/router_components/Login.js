@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { OuterContainer, FormContainer, Form, FormBlock, Span, CenterBlock } from './my_styled_components';
+import Authorization from '../rest/Authorization';
+
 import { connect } from 'react-redux';
 
 import { bindActionCreators } from 'redux';
