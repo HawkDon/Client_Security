@@ -30,20 +30,41 @@ import rootReducer from './router_reducer';
 
 const store = createStore(rootReducer, {}, composeWithDevTools());
 
-const App = () => (
-  <Provider store={store}>
-    <Router>
-      <Wrapper>
-        <Header />
-        <Switch>
-          <Route exact path='/' render={() => <StartPage />} />
-          <Route path='/login' render={() => <Login />} />
-          <Route path='/register' render={() => <Register />} />
-          <Route path='/mysql' render={() => <MySQLSection />}/>
-        </Switch>
-      </Wrapper>
-    </Router>
-  </Provider>
-)
+
+
+class App extends Component {
+
+  state = {
+    isLoggedIn: window.localStorage.getItem('auth'),
+  }
+
+  handleRefresh = () => {
+    const token = window.localStorage.getItem('auth');
+    this.setState({ isLoggedIn: token });
+  }
+
+  logOut = () => {
+    window.localStorage.removeItem('auth');
+    this.setState({
+      isLoggedIn: window.localStorage.getItem('auth')
+    })
+  }
+
+  render() {
+    return (<Provider store={store}>
+      <Router>
+        <Wrapper>
+          <Header isLoggedIn={this.state.isLoggedIn} logOut={this.logOut}/>
+          <Switch>
+            <Route exact path='/' render={() => <StartPage />} />
+            <Route path='/login' render={() => <Login handleRefresh={this.handleRefresh} />} />
+            <Route path='/register' render={() => <Register />} />
+            <Route path='/mysql' render={() => <MySQLSection />} />
+          </Switch>
+        </Wrapper>
+      </Router>
+    </Provider>)
+  }
+}
 
 export default App;

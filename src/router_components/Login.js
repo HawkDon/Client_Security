@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { OuterContainer, FormContainer, Form, FormBlock, Span, CenterBlock } from './my_styled_components';
 import Authorization from '../rest/Authorization';
+import Spinner from '../loader/Spinner';
 
 import { connect } from 'react-redux';
 
@@ -17,8 +18,8 @@ class Login extends Component {
         //Validation
         messageToggle: false,
         message: "",
+        loader: false,
     }
-
 
     checkProperties = (user) => {
         for (let key in user) {
@@ -48,30 +49,34 @@ class Login extends Component {
             })
         } else {
             this.setState({
-                messageToggle: true,
-                message: "Performing backend operation..."
+                loader: true,
+                message: ""
             }, async () => {
                 await Authorization.login(user);
                 this.setState({
                     messageToggle: false,
-                    message: ""
+                    loader: false,
+                }, () => {
+                    this.props.toggleLogin();
+                    this.props.handleRefresh();
                 })
             })
         }
     }
     render() {
         const { userName, password } = this.state.user;
-        const { messageToggle, message } = this.state;
+        const { messageToggle, message, loader } = this.state;
         return (
             <OuterContainer toggle={this.props.toggle}>
                 <FormContainer>
                     <Form>
                         <Span onClick={this.props.toggleLogin}>X</Span>
-                        <h1 style={{ textAlign: 'center' }}>Login</h1>
+                        <h2 style={{ textAlign: 'center' }}>Login</h2>
                         {messageToggle ? (<p style={{ textAlign: 'center', fontSize: '20px' }}>{message}</p>) : null}
+                        {loader ? (<Spinner />) : null}
                         <FormBlock><label>Username:</label><input type="text" placeholder="Please type in your username" id="userName" value={userName} onChange={this.handleInputChange} /></FormBlock>
-                        <FormBlock><label>Password:</label><input type="text" placeholder="Please type in your lastname" id="password" value={password} onChange={this.handleInputChange} /></FormBlock>
-                        <CenterBlock><input style={{ height: '40px' }} type="submit" value="Register" onClick={this.handleInputClick} /></CenterBlock>
+                        <FormBlock><label>Password:</label><input type="password" placeholder="Please type in your lastname" id="password" value={password} onChange={this.handleInputChange} /></FormBlock>
+                        <CenterBlock><input style={{ height: '40px' }} type="submit" value="Login" onClick={this.handleInputClick} /></CenterBlock>
                     </Form>
                 </FormContainer>
             </OuterContainer>
