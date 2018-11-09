@@ -50,8 +50,12 @@ class Login extends Component {
             this.setState({
                 messageToggle: true,
                 message: "Performing backend operation..."
-            }, () => {
-                // Perform backend call
+            }, async () => {
+                await Authorization.login(user);
+                this.setState({
+                    messageToggle: false,
+                    message: ""
+                })
             })
         }
     }

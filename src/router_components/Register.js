@@ -55,10 +55,14 @@ class Register extends Component {
                 message: "Please type in all fields to create a user"
             })
         } else if (user.password === validationPassword) {
-            // Possible to change later. Perform backend call here
             this.setState({
                 messageToggle: true,
-                message: "You succesfully registered your user to the database!"
+                message: "Performing async call..."
+            }, async () => {
+                await Authorization.addUser(user);
+                this.setState({
+                    message: "Succes! user has been registered."
+                })
             })
         } else {
             // Error if it does not match criterias
