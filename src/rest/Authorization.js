@@ -1,13 +1,16 @@
+import { checkResponseLogin } from '../response/checkResponse';
+
 class Authorization {
 
-    static addUser = (user) => {
-        return fetch("http://localhost:8080/api/user/adduser", {
+    static register = (user) => {
+        return fetch("http://localhost:8080/api/user/register", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(user)
         })
+        .then(res => res.json());
     }
 
     static login = (user) => {
@@ -18,8 +21,8 @@ class Authorization {
             },
             body: JSON.stringify(user)
         })
-            .then(response => response.json())
-            .then( token => window.localStorage.setItem('auth', token) );
+        .then(response => response.json())
+        .then( item => checkResponseLogin(item) );
     }
 }
 

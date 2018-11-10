@@ -8,14 +8,17 @@ import { bindActionCreators } from 'redux';
 
 import { connect } from 'react-redux';
 
+import { parseJwt } from './dynamic_functions/parsePayload';
+
 
 
 const Header = ({ toggleLogin, toggleRegister, isLoggedIn, logOut }) => {
-    //If logged in
+    const payLoad = (isLoggedIn ? parseJwt(isLoggedIn) : null);
     return (isLoggedIn ?
         (
             <HeaderUl>
                 <HeaderLi position="a"><NavLink to='/'>Start</NavLink></HeaderLi>
+                <HeaderLi position="h" disable>Logged in as {payLoad.userName}</HeaderLi>
                 <HeaderLi position="i"><NavLink to='/mysql'>MySQL</NavLink></HeaderLi>
                 <HeaderLi position="j"><NavLink onClick={logOut} to='/'>Log Out</NavLink></HeaderLi>
             </HeaderUl>

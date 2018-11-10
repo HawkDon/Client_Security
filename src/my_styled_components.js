@@ -15,10 +15,11 @@ export const HeaderLi = styled.li`
 text-align: center;
 padding: 10px;
 grid-area: ${props => props.position};
-    
-:hover {
+
+${props => !props.disable ? `:hover {
     background-color: skyblue;
-}
+}` : null }
+
 & a {
     text-decoration: none;
     color: black;
