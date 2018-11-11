@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StartPageWrapper } from './my_styled_components';
-import styled from 'styled-components';
 import Queries from '../rest/Queries';
 
 import { MySQLWrapper, TextArea, ListBlock, SqlUl, SubmitButton, RadioButtons } from './my_styled_components'

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { bindActionCreators } from 'redux';
 
-import { toggleRegister } from '../actions/toggleLogin';
+import { toggleRegister } from '../actions/toggleRegister';
 
 class Register extends Component {
     state = {
@@ -111,7 +111,7 @@ class Register extends Component {
 }
 
 const mapStateToProps = state => ({
-    toggle: state.login.toggleRegister
+    toggle: state.register.toggleRegister
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({

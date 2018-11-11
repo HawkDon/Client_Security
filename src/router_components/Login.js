@@ -9,6 +9,8 @@ import { bindActionCreators } from 'redux';
 
 import { toggleLogin } from '../actions/toggleLogin';
 
+import { handleLogin } from '../actions/refreshToken';
+
 class Login extends Component {
     state = {
         user: {
@@ -67,7 +69,7 @@ class Login extends Component {
                         guiMessage: "Welcome " + user.userName
                     }, () => {
                         this.props.toggleLogin();
-                        this.props.handleRefresh();
+                        this.props.handleLogin();
                     })
                 }
             })
@@ -105,6 +107,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     toggleLogin,
+    handleLogin
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

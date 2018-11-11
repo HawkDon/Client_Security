@@ -2,7 +2,10 @@ import React from 'react';
 import { HeaderUl, HeaderLi } from './my_styled_components';
 import { NavLink } from 'react-router-dom';
 
-import { toggleLogin, toggleRegister } from './actions/toggleLogin';
+import { toggleLogin } from './actions/toggleLogin';
+import { toggleRegister } from './actions/toggleRegister';
+
+import { handleLogOut } from './actions/refreshToken';
 
 import { bindActionCreators } from 'redux';
 
@@ -12,15 +15,15 @@ import { parseJwt } from './dynamic_functions/parsePayload';
 
 
 
-const Header = ({ toggleLogin, toggleRegister, isLoggedIn, logOut }) => {
-    const payLoad = (isLoggedIn ? parseJwt(isLoggedIn) : null);
-    return (isLoggedIn ?
+const Header = ({ toggleLogin, toggleRegister, authToken, handleLogOut }) => {
+    const payLoad = (authToken ? parseJwt(authToken) : null);
+    return (authToken ?
         (
             <HeaderUl>
                 <HeaderLi position="a"><NavLink to='/'>Start</NavLink></HeaderLi>
                 <HeaderLi position="h" disable>Logged in as {payLoad.userName}</HeaderLi>
                 <HeaderLi position="i"><NavLink to='/mysql'>MySQL</NavLink></HeaderLi>
-                <HeaderLi position="j"><NavLink onClick={logOut} to='/'>Log Out</NavLink></HeaderLi>
+                <HeaderLi position="j"><NavLink onClick={handleLogOut} to='/'>Log Out</NavLink></HeaderLi>
             </HeaderUl>
         ) : (
             < HeaderUl >
@@ -32,9 +35,13 @@ const Header = ({ toggleLogin, toggleRegister, isLoggedIn, logOut }) => {
     )
 }
 
+const mapPropsToState = state => ({
+    authToken: state.token.authToken
+})
 const mapDispatchToProps = dispatch => bindActionCreators({
     toggleLogin,
     toggleRegister,
+    handleLogOut
 }, dispatch)
 
-export default connect(null, mapDispatchToProps)(Header);
+export default connect(mapPropsToState, mapDispatchToProps)(Header);
