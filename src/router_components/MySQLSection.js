@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { StartPageWrapper } from './my_styled_components';
 import Queries from '../rest/Queries';
+import ListResults from './components/ListResults';
 
-import { MySQLWrapper, TextArea, ListBlock, SqlUl, SubmitButton, RadioButtons } from './my_styled_components'
+import { MySQLWrapper, TextArea, ListBlock, SubmitButton, RadioButtons } from './my_styled_components'
 
 class MySQLSection extends Component {
 
     state = {
         radioToggleSafe: false,
-        radioToggleNotsafe: true,
+        radioToggleNotsafe: false,
         queryResults: [],
         queryString: "",
         loader: false,
@@ -17,21 +18,47 @@ class MySQLSection extends Component {
 
 
     handleQuery = () => {
-        const { queryString } = this.state;
+        const { queryString, radioToggleNotsafe, radioToggleSafe } = this.state;
         this.setState({
             loader: true
         }, async () => {
-            if (queryString.includes("users")) {
-                const responsePackage = await Queries.runQuery(queryString, "users");
-                this.setState({
-                    queryResults: responsePackage,
-                    loader: false
-                })
+            if (!radioToggleNotsafe && !radioToggleSafe) {
+                const responsePackage = await Queries.runQuery(queryString);
+                
+                if (!responsePackage.isError) {
+                    this.setState({
+                        queryResults: responsePackage,
+                        loader: false
+                    })
+                } else {
+                    this.setState({
+                        guiMessage: responsePackage.message
+                    })
+                }
+            } else if(radioToggleNotsafe && !radioToggleSafe) {
+                const responsePackage = await Queries.runNotSafeQuery(queryString);
+                if (!responsePackage.isError) {
+                    this.setState({
+                        queryResults: responsePackage,
+                        loader: false
+                    })
+                } else {
+                    this.setState({
+                        guiMessage: responsePackage.message
+                    })
+                }
             } else {
-                const responsePackage = await Queries.runQuery(queryString, "noTable");
-                this.setState({
-                    guiMessage: responsePackage.message
-                })
+                const responsePackage = await Queries.runSafeQuery(queryString);
+                if (!responsePackage.isError) {
+                    this.setState({
+                        queryResults: responsePackage,
+                        loader: false
+                    })
+                } else {
+                    this.setState({
+                        guiMessage: responsePackage.message
+                    })
+                }
             }
         })
     }
@@ -58,20 +85,19 @@ class MySQLSection extends Component {
                 <h1 style={{ textAlign: "center" }}>MySQL</h1>
                 <h1 style={{ textAlign: "center", color: "red" }}>{guiMessage}</h1>
                 <MySQLWrapper>
-                    <TextArea rows="10" value={queryString} onChange={this.handleTextArea}>
-                    </TextArea>
+                    {(!radioToggleNotsafe && !radioToggleSafe ? (
+                        <TextArea rows="10" value={queryString} onChange={this.handleTextArea}>
+                        </TextArea>) : <div>
+                            <h2 style={{ color: "white", padding: "6px" }}>Type in id to get a user</h2>
+                            <input style={{ margin: "12px" }} type="text" value={queryString} onChange={this.handleTextArea} />
+                        </div>)}
                     <ListBlock>
-                        <SqlUl>
-                            {(queryResults.length ?
-                                (<React.Fragment>
-                                    <li style={{fontSize: "28px"}}>Results:</li>
-                                    {queryResults.map(res => <li>{res.userName}</li>)}
-                                </React.Fragment>)
-                                :
-                                null
-                            )}
+                        {(queryResults.length ?
+                            (<ListResults queryResults={queryResults} />)
+                            :
+                            null
+                        )}
 
-                        </SqlUl>
                     </ListBlock>
                     <SubmitButton onClick={this.handleQuery} type="submit" value="Run" />
                     <RadioButtons>

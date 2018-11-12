@@ -1,9 +1,8 @@
 class Queries {
 
-    static runQuery = (query, table) => {
+    static runQuery = (query) => {
         const packageJson = {
-            query: query,
-            table: table
+            query: query
         };
         return fetch("http://localhost:8080/api/queries/execute", {
             method: "POST",
@@ -15,6 +14,19 @@ class Queries {
             .then(response => response.json())
     }
 
+    static runNotSafeQuery = (query) => {
+        return fetch("http://localhost:8080/api/queries/notSafeExecute/" + query, {
+            method: "GET"
+        })
+            .then(response => response.json())
+    }
+
+    static runSafeQuery = (query) => {
+        return fetch("http://localhost:8080/api/queries/safeExecute/" + query, {
+            method: "GET"
+        })
+            .then(response => response.json())
+    }
 }
 
 export default Queries;

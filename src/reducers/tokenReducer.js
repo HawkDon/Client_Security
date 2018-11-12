@@ -1,7 +1,7 @@
 import { HANDLE_LOGIN, HANDLE_LOGOUT } from '../actions/refreshToken';
 
 const initialState = {
-    authToken: null
+    authToken: window.localStorage.getItem('auth')
 }
 
 export default (state = initialState, action) => {
