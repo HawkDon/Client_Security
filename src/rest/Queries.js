@@ -4,7 +4,7 @@ class Queries {
         const packageJson = {
             query: query
         };
-        return fetch("http://localhost:8080/api/queries/execute", {
+        return fetch("http://localhost:8080/security/api/queries/execute", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -15,14 +15,22 @@ class Queries {
     }
 
     static runNotSafeQuery = (query) => {
-        return fetch("http://localhost:8080/api/queries/notSafeExecute/" + query, {
-            method: "GET"
+        const packageJson = {
+            query: query
+        };
+        return fetch("http://localhost:8080/security/api/queries/notSafeExecute/", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': window.localStorage.getItem('auth')
+            },
+            body: JSON.stringify(packageJson)
         })
             .then(response => response.json())
     }
 
     static runSafeQuery = (query) => {
-        return fetch("http://localhost:8080/api/queries/safeExecute/" + query, {
+        return fetch("http://localhost:8080/security/api/queries/safeExecute/" + query, {
             method: "GET"
         })
             .then(response => response.json())

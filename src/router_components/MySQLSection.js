@@ -9,7 +9,7 @@ class MySQLSection extends Component {
 
     state = {
         radioToggleSafe: false,
-        radioToggleNotsafe: false,
+        radioToggleNotsafe: true,
         queryResults: [],
         queryString: "",
         loader: false,
@@ -20,22 +20,13 @@ class MySQLSection extends Component {
     handleQuery = () => {
         const { queryString, radioToggleNotsafe, radioToggleSafe } = this.state;
         this.setState({
+            guiMessage: '',
+            queryResults: ''
+        })
+        this.setState({
             loader: true
         }, async () => {
-            if (!radioToggleNotsafe && !radioToggleSafe) {
-                const responsePackage = await Queries.runQuery(queryString);
-                
-                if (!responsePackage.isError) {
-                    this.setState({
-                        queryResults: responsePackage,
-                        loader: false
-                    })
-                } else {
-                    this.setState({
-                        guiMessage: responsePackage.message
-                    })
-                }
-            } else if(radioToggleNotsafe && !radioToggleSafe) {
+            if(radioToggleNotsafe && !radioToggleSafe) {
                 const responsePackage = await Queries.runNotSafeQuery(queryString);
                 if (!responsePackage.isError) {
                     this.setState({
@@ -85,7 +76,7 @@ class MySQLSection extends Component {
                 <h1 style={{ textAlign: "center" }}>MySQL</h1>
                 <h1 style={{ textAlign: "center", color: "red" }}>{guiMessage}</h1>
                 <MySQLWrapper>
-                    {(!radioToggleNotsafe && !radioToggleSafe ? (
+                    {(radioToggleNotsafe && !radioToggleSafe ? (
                         <TextArea rows="10" value={queryString} onChange={this.handleTextArea}>
                         </TextArea>) : <div>
                             <h2 style={{ color: "white", padding: "6px" }}>Type in id to get a user</h2>
